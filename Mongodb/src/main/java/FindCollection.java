@@ -3,6 +3,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 /**
@@ -28,6 +29,23 @@ public class FindCollection {
             MongoCursor<Document> mongoCursor = findIterable.iterator();
             while (mongoCursor.hasNext()) {
                 System.out.println(mongoCursor.next());
+            }
+
+            /**
+             * 更新 test 文档
+             * 1.获取的集合 collection , updateMany() 更新
+             * 2.参数
+             *   参数1：采用过滤器 的  eq(K,V) 匹配条件
+             *   参数2：更新语法 new Document ("$set",V),new Document(k,v))
+             * 3. FindIterable<> 遍历更新后的文档
+             */
+            collection.updateMany(
+                    Filters.eq("likes", 100),
+                    new Document("$set", new Document("likes", 200)));
+            FindIterable<Document> iterable = collection.find();
+            MongoCursor<Document> cursor = findIterable.iterator();
+            while (cursor.hasNext()) {
+                System.out.println(cursor.next());
             }
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
