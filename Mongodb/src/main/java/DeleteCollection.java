@@ -13,26 +13,24 @@ import org.bson.Document;
 public class DeleteCollection {
     public static void main(String[] args) {
         try {
-            MongoClient mongoClient = new MongoClient("10.211.55.7", 27017);
-            MongoDatabase mongoDatabase = mongoClient.getDatabase("mycol");
+            MongoClient mongoClient = new MongoClient("101.201.117.5", 12128);
+            MongoDatabase mongoDatabase = mongoClient.getDatabase("ticket_zhibo");
             System.out.println("连接成功");
-            MongoCollection<Document> collection = mongoDatabase.getCollection("test");
-            System.out.println(" test 选择成功");
+            MongoCollection<Document> collection = mongoDatabase.getCollection("t_activity_user");
+            System.out.println("选择成功");
 
             /**
-             * 删除 test 文档
-             * 1.获取的集合 collection ,  deleteOne() 删除符合条件的第一个
-             * 2.获取的集合 collection ,  deleteMany() 删除符合条件的所有
+             * 检索 test 集合所有文档
+             * 1.获取文档的 迭代器 FindIterable<Document>
+             * 2.获取文档指针 MongoCursor<Document>
+             * 3.通过指针遍历文档集合
              */
-            collection.deleteOne(Filters.eq("likes", 200));
-
-//            collection.deleteMany(Filters.eq("likes", 200));
-
-            FindIterable<Document> iterable = collection.find();
-            MongoCursor<Document> cursor = iterable.iterator();
-            while (cursor.hasNext()) {
-                System.out.println(cursor.next());
+            FindIterable<Document> findIterable = collection.find();
+            MongoCursor<Document> mongoCursor = findIterable.iterator();
+            while (mongoCursor.hasNext()) {
+                System.out.println(mongoCursor.next());
             }
+
         } catch (Exception e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
