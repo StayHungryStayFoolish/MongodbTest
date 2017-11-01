@@ -26,6 +26,7 @@ public class FindCollection {
              * 3.通过指针遍历文档集合
              */
             FindIterable<Document> findIterable = collection.find();
+            FindIterable<Document> iterable = collection.find();
             MongoCursor<Document> mongoCursor = findIterable.iterator();
             while (mongoCursor.hasNext()) {
                 System.out.println(mongoCursor.next());
@@ -42,7 +43,6 @@ public class FindCollection {
             collection.updateMany(
                     Filters.eq("likes", 100),
                     new Document("$set", new Document("likes", 200)));
-            FindIterable<Document> iterable = collection.find();
             MongoCursor<Document> cursor = findIterable.iterator();
             while (cursor.hasNext()) {
                 System.out.println(cursor.next());

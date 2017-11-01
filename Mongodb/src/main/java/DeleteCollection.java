@@ -11,6 +11,19 @@ import org.bson.Document;
  * 下午8:18 on 17/10/23.
  */
 public class DeleteCollection {
+
+    public static void test() {
+        try {
+            MongoClient mongoClient = new MongoClient("101.201.117.5", 12128);
+            MongoDatabase mongoDatabase = mongoClient.getDatabase("ticket_zhibo");
+            System.out.println("连接成功");
+            MongoCollection<Document> collection = mongoDatabase.getCollection("t_activity_user");
+            System.out.println("选择成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         try {
             MongoClient mongoClient = new MongoClient("101.201.117.5", 12128);
@@ -32,7 +45,7 @@ public class DeleteCollection {
             }
 
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 }
