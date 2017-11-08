@@ -19,3 +19,12 @@ public class RegexTest {
         }
     }
 }
+
+/**
+ $!{data.channelName}
+ class java.lang.String
+ $!{data.title}
+ class java.lang.String
+ $!{data.name}
+ class java.lang.String
+ */
