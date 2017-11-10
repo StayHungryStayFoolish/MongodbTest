@@ -34,6 +34,7 @@ public class RegexExam {
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             String name = matcher.group(1);//键名
+            System.out.println("name==》"+name);
             String value = (String) data.get(name);//键值
             if (value == null) {
                 value = "";
@@ -69,7 +70,7 @@ public class RegexExam {
              * 个替换了。
              */
             matcher.appendReplacement(sb, value);
-            System.out.println("sb = " + sb.toString());
+//            System.out.println("sb = " + sb.toString());
         }
         //最后还得要把尾串接到已替换的内容后面去，这里尾串为“，欢迎下次光临！”
         matcher.appendTail(sb);
