@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,22 +11,60 @@ public class TemplateReplace {
     public static void main(String[] args) throws Exception {
         HashMap<String, String> map = new HashMap<String, String>();
         String temp = "【$!{data.channelName}】您预订的直播：《$!{data.title}-$!{data.name}》，将于30分钟后开始。...";
-        map = composeTemplate(temp, "data.channelName", "平安");
-//        System.out.println(composeMessage(temp,map));
+//        map = composeTemplate(temp, "data.channelName", "平安");
+//        System.out.println("========"+composeMessage(temp,map));
+        map.put("data.channelName", "李三");
+        map.put("data.title", "平安保险");
+        map.put("data.name", "开门红");
 
-        List list = new ArrayList();
-        list = getKey(temp);
-        for (Object o : list) {
-            System.out.println("==>"+o);
+        String s = composeMessage(temp, map);
+
+        System.out.println("替换后 = 》 "+s);
+
+        List keyList = new ArrayList();
+        List valueList = new ArrayList();
+        keyList = getKey(temp);
+        valueList = getValue(temp);
+        System.out.println("KeyList==>" + keyList);
+        System.out.println("ValueList==>" + valueList);
+        LinkedHashMap<String, String> templateMsgJson = new LinkedHashMap<String, String>();
+        for (Object value : valueList) {
+            for (Object key : keyList) {
+
+                if (value.toString().contains(key.toString())) {
+                    /*** String   ServletUtils.getParameter(request,key,"");        **/
+//                    System.out.println("value value ==  "+value);
+//                    System.out.println("key key ==  "+key);
+                }
+            }
         }
     }
 
     /**
      * 获取模板中的占位符，即 Map 中的 Key
+     *
      * @param template
      * @return
      */
     public static List<String> getKey(String template) {
+        List<String> list = new ArrayList<String>();
+        String regex = "\\$!\\{(.+?)\\}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(template);
+        while (matcher.find()) {
+            String name = matcher.group(1);
+            name = name.replace("data.", "");
+            list.add(name);
+        }
+        return list;
+    }
+
+    /**
+     * 获取 value ，显示在 placeholder 中
+     * @param template
+     * @return
+     */
+    public static List<String> getValue(String template) {
         List<String> list = new ArrayList<String>();
         String regex = "\\$!\\{(.+?)\\}";
         Pattern pattern = Pattern.compile(regex);
@@ -44,13 +79,14 @@ public class TemplateReplace {
     /**
      * 根据 Key 更新 Map 值
      * 替换占位符内容
+     *
      * @param template
      * @param key
      * @param value
      * @return
      */
-    public static HashMap<String,String> composeTemplate(String template, String key, String value) {
-        HashMap<String,String> map = new HashMap();
+    public static HashMap<String, String> composeTemplate(String template, String key, String value) {
+        HashMap<String, String> map = new HashMap();
         String regex = "\\$!\\{(.+?)\\}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(template);
@@ -65,6 +101,7 @@ public class TemplateReplace {
 
     /**
      * 将 Map 的值更新到模板中，替换到原来的占位符
+     *
      * @param template
      * @param data
      * @return
