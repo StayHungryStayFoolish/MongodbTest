@@ -10,21 +10,45 @@ import java.util.regex.Pattern;
 public class RegexExam {
     public static void main(String[] args) {
         HashMap data = new HashMap();
-        String template = "尊敬的客户${customerName}你好！本次消费金额${amount}，您帐户${accountNumber}上的余额为${balance}，欢迎下次光临！";
-        data.put("customerName", "小明");
-        data.put("accountNumber", "888888888");
-        data.put("balance", "$1000000.00");
-        data.put("amount", "$1000.00");
+        String temp = "【$!{data.channelName}】您预订的直播：《$!{data.title}-$!{data.name}》，将于30分钟后开始。...";
+        data.put("data.channelName", "小明");
+        data.put("data.title", "888888888");
+        data.put("data.name", "平安");
         try {
-            System.out.println(composeMessage(template, data));
+//            System.out.println(composeMessage(temp, data));
+            HashMap<String, String> map = new HashMap<String, String>();
+            map = composeTemplate(temp);
+            for (String s : map.keySet()) {
+                String value = map.get(s);
+                map.put(s, "b");
+                String after =map.get(s);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 }
 
+    /**
+     *
+     * @param template
+     * @return
+     */
+    public static HashMap<String,String> composeTemplate(String template) {
+        HashMap<String,String> map = new HashMap();
+        String regex = "\\$!\\{(.+?)\\}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(template);
+        while (matcher.find()) {
+            String key = matcher.group(1);
+            map.put(key,"");
+            System.out.println("==>"+key);
+        }
+        return map;
+    }
+
     public static String composeMessage(String template, Map data)
             throws Exception {
-        String regex = "\\$\\{(.+?)\\}";
+        String regex = "\\$!\\{(.+?)\\}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(template);
         /*
