@@ -32,7 +32,9 @@ public class TemplateReplace {
             for (Object key : keyList) {
 
                 if (value.toString().contains(key.toString())) {
-                    /*** String   ServletUtils.getParameter(request,key,"");        **/
+                    // 获取 jsp 页面 div input 输入框 内的值
+                    /*** String tempKeywordData =  ServletUtils.getParameter(request,key,"");  **/
+                    templateMsgJson.put(key.toString(), "templateMsgJson");
 //                    System.out.println("value value ==  "+value);
 //                    System.out.println("key key ==  "+key);
                 }
@@ -118,7 +120,7 @@ public class TemplateReplace {
          */
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
-            String key = matcher.group(1);//键
+            String key = matcher.group(1);// 键，查找每个占位符
             String value = (String) data.get(key);//值
             if (value == null) {
                 value = "";
